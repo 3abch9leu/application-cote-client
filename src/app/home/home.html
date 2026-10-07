@@ -1,0 +1,32 @@
+<p>home works!</p>
+<h1>bienvenue, {{ nom }}</h1>
+<img [src]="imgUrl" alt="Logo Angular" width="200">
+<button (click)="bonjour()">Cliquez ici</button>
+@if (message()) {
+  <p>{{ message() }}</p>
+}
+
+<label for="nom-input">Nom :</label>
+<input id="nom-input" name="nom" [(ngModel)]="nom">
+<p>bonjour, {{ nom }}!</p>
+
+@if (nom === "aziz") {
+  <p>vous etes aziz</p>
+}
+@else {
+  <p>vous n'etes pas aziz</p>
+}
+@for (s of students; track s) {
+  <p>student: {{ s }}</p>
+
+}
+@for (s of students1; track s.nom) {
+    <p>student: {{ s.nom }}, {{ s.prenom }}, {{ s.age }}</p>
+}
+
+<h1>count: {{ count }}  </h1>
+<button (click)="increment1()">increment </button>
+<h1>countSignal: {{ countSignal() }}  </h1>
+<button (click)="increment()">increment </button>
+
+

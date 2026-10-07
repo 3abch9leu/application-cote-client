@@ -1,0 +1,4 @@
+<p>conference-list works!</p>
+@for (c of conferences; track c.nom) {
+  <app-conference-details [conference]="c" (increment)="onIncrement(c)"></app-conference-details>
+}
