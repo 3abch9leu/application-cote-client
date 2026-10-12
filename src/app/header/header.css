@@ -1,18 +1,52 @@
 :host {
   display: block;
-  background-color: #3a86ff;
-  color: white;
-  padding: 15px;
-  text-align: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: #0f172a;
+  color: #f8fafc;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
 }
+
+nav {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-right: auto;
+}
+
+.brand span { color: #38bdf8; }
 
 nav a {
-  color: white;
+  color: #cbd5e1;
   text-decoration: none;
-  margin: 0 5px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  transition: background 0.2s, color 0.2s;
 }
 
+nav a:hover { background: #1e293b; color: #fff; }
+
 nav a.active {
-  font-weight: bold;
-  text-decoration: underline;
+  background: #38bdf8;
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.badge {
+  background: #22c55e;
+  color: #052e16;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 4px 12px;
+  border-radius: 999px;
+  white-space: nowrap;
 }

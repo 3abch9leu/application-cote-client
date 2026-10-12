@@ -1,4 +1,24 @@
-<p>conference-list works!</p>
-@for (c of conferences; track c.nom) {
-  <app-conference-details [conference]="c" (increment)="onIncrement(c)"></app-conference-details>
-}
+<div class="catalog-head">
+  <h2>
+    Catalogue des conférences
+    <small>{{ conferenceService.filteredConferences().length }} conférence(s) • {{ bookingService.bookedCount() }} réservée(s)</small>
+  </h2>
+
+  <label class="filter">
+    Filtrer par sujet
+    <input
+      type="text"
+      placeholder="ex: Frontend, DevOps..."
+      [ngModel]="conferenceService.filtreSujet()"
+      (ngModelChange)="conferenceService.setFiltre($event)"
+    />
+  </label>
+</div>
+
+<div class="grid">
+  @for (c of conferenceService.filteredConferences(); track c.id) {
+    <app-conference-details [conference]="c"></app-conference-details>
+  } @empty {
+    <p class="empty">Aucune conférence trouvée.</p>
+  }
+</div>

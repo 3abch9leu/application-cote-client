@@ -1,0 +1,61 @@
+:host {
+  display: block;
+}
+
+.catalog-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.catalog-head h2 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+.catalog-head h2 small {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #64748b;
+}
+
+.filter {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.filter input {
+  padding: 10px 14px;
+  min-width: 260px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.filter input:focus {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.empty {
+  background: #fff;
+  border: 1px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  color: #64748b;
+}

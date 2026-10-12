@@ -1,20 +1,35 @@
-import { Component } from '@angular/core';
-import { ConferenceDetails, Conference } from '../conference-details/conference-details';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ConferenceDetails } from '../conference-details/conference-details';
+import { ConferenceService } from '../services/conference.service';
+import { BookingService } from '../services/booking.service';
 
+/**
+ * AVANT (anti-pattern) :
+ * - `conferences` en dur dans le composant.
+ * - logique de filtrage copiée ici ET dans Navbar.
+ * - Navbar faisait `new ConferenceListComponent()` => instance isolée,
+ *   hors Injecteur Angular : pas de cycle de vie, pas de change detection,
+ *   état désynchronisé, tests impossibles.
+ *
+ * APRÈS :
+ * - Composant FIN : uniquement affichage + délégation.
+ * - Données et filtrage : ConferenceService (singleton).
+ * - Réservations : BookingService (singleton).
+ * - Injection moderne via inject(), signaux réactifs.
+ */
 @Component({
   selector: 'app-conference-list',
-  imports: [ConferenceDetails],
+  imports: [ConferenceDetails, FormsModule],
   templateUrl: './conference-list.html',
   styleUrl: './conference-list.css',
 })
 export class ConferenceList {
-  conferences: Conference[] = [
-    { nom: 'Angular', date: '2024-06-01', lieu: 'Paris' },
-    { nom: 'React', date: '2024-07-15', lieu: 'New York' },
-    { nom: 'Vue.js', date: '2024-08-20', lieu: 'Tokyo' },
-  ];
+  // Injection moderne (remplace constructor(private svc: ...) )
+  protected readonly conferenceService = inject(ConferenceService);
+  protected readonly bookingService = inject(BookingService);
 
-  onIncrement(conference: Conference) {
-    console.log('increment received for', conference.nom);
+  onToggle(id: number): void {
+    this.bookingService.toggle(id);
   }
 }

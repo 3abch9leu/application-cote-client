@@ -1,4 +1,10 @@
-<p>conference-details works!</p>
-<p>{{ conference().nom }}, {{ conference().date }}, {{ conference().lieu }}</p>
+<article class="card" [class.booked]="isBooked()">
+  <span class="tag">{{ conference().sujet }}</span>
+  <h3>{{ conference().nom }}</h3>
+  <p class="meta">📅 {{ conference().date }} • 📍 {{ conference().lieu }}</p>
+  <p class="places">{{ conference().places }} places • {{ isBooked() ? '✅ Réservée' : 'Disponible' }}</p>
 
-<button (click)="onIncrement()">Increment</button>
+  <button (click)="onToggle()">
+    {{ isBooked() ? 'Annuler' : 'Réserver' }}
+  </button>
+</article>

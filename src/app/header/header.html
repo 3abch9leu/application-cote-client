@@ -1,4 +1,6 @@
 <nav>
-  <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a> |
+  <div class="brand">Conf<span>Tech</span></div>
+  <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
   <a routerLink="/conferences" routerLinkActive="active">Conferences</a>
+  <span class="badge">🎟 {{ bookingService.bookedCount() }} réservée(s)</span>
 </nav>
