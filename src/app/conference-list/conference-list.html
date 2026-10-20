@@ -1,24 +1,63 @@
 <div class="catalog-head">
   <h2>
     Catalogue des conférences
-    <small>{{ conferenceService.filteredConferences().length }} conférence(s) • {{ bookingService.bookedCount() }} réservée(s)</small>
+    <small>
+      {{ conferenceService.filteredConferences().length }} / {{ conferenceService.conferences().length }} conférence(s)
+      • {{ bookingService.bookedCount() }} réservée(s)
+    </small>
   </h2>
+</div>
 
+<div class="filters">
   <label class="filter">
-    Filtrer par sujet
+    Rechercher
     <input
-      type="text"
-      placeholder="ex: Frontend, DevOps..."
-      [ngModel]="conferenceService.filtreSujet()"
-      (ngModelChange)="conferenceService.setFiltre($event)"
+      type="search"
+      placeholder="nom, sujet ou lieu..."
+      [ngModel]="conferenceService.filtreTexte()"
+      (ngModelChange)="conferenceService.setFiltreTexte($event)"
+      [ngModelOptions]="{ standalone: true }"
     />
   </label>
+
+  <label class="filter">
+    Sujet
+    <select
+      [ngModel]="conferenceService.sujetChoisi()"
+      (ngModelChange)="conferenceService.setSujet($event)"
+      [ngModelOptions]="{ standalone: true }"
+    >
+      @for (s of conferenceService.sujets(); track s) {
+        <option [value]="s">{{ s }}</option>
+      }
+    </select>
+  </label>
+
+  <label class="filter">
+    Places minimum
+    <select
+      [ngModel]="conferenceService.placesMin()"
+      (ngModelChange)="conferenceService.setPlacesMin(+$event)"
+      [ngModelOptions]="{ standalone: true }"
+    >
+      <option [ngValue]="0">Toutes</option>
+      <option [ngValue]="80">80+</option>
+      <option [ngValue]="100">100+</option>
+      <option [ngValue]="120">120+</option>
+    </select>
+  </label>
+
+  @if (conferenceService.filtresActifs()) {
+    <button type="button" class="reset" (click)="conferenceService.resetFiltres()">
+      Réinitialiser
+    </button>
+  }
 </div>
 
 <div class="grid">
   @for (c of conferenceService.filteredConferences(); track c.id) {
     <app-conference-details [conference]="c"></app-conference-details>
   } @empty {
-    <p class="empty">Aucune conférence trouvée.</p>
+    <p class="empty">Aucune conférence ne correspond à ces critères.</p>
   }
 </div>

@@ -51,5 +51,24 @@ button {
 button:hover { background: #1e293b; }
 button:active { transform: scale(0.98); }
 
+.places-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.places-input input {
+  width: 72px;
+  margin-top: 0;
+  padding: 6px 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  outline: none;
+}
+
+.places-input input:disabled { background: #e2e8f0; cursor: not-allowed; }
+
 .card.booked button { background: #dc2626; }
 .card.booked button:hover { background: #b91c1c; }

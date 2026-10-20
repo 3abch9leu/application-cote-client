@@ -23,6 +23,18 @@
   color: #64748b;
 }
 
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 14px;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
 .filter {
   display: flex;
   flex-direction: column;
@@ -31,19 +43,36 @@
   color: #475569;
 }
 
-.filter input {
+.filter input,
+.filter select {
   padding: 10px 14px;
-  min-width: 260px;
+  min-width: 220px;
   border: 1px solid #cbd5e1;
   border-radius: 10px;
   outline: none;
   font-size: 1rem;
+  background: #fff;
 }
 
-.filter input:focus {
+.filter select { min-width: 150px; }
+
+.filter input:focus,
+.filter select:focus {
   border-color: #38bdf8;
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2);
 }
+
+.reset {
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.reset:hover { background: #e2e8f0; }
 
 .grid {
   display: grid;

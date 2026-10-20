@@ -1,0 +1,31 @@
+<h2>Inscription</h2>
+
+<form [formGroup]="userForm" (ngSubmit)="submitForm()" (ngReset)="validateForm()" novalidate>
+  @for (champ of champs(); track champ.name) {
+    <label class="champ">
+      <span class="label">{{ champ.label }}</span>
+
+      <input
+        [type]="champ.type"
+        [formControlName]="champ.name"
+        [placeholder]="champ.placeholder"
+        [class.invalid]="champ.invalide && champ.touched"
+      />
+
+      @if (champ.invalide && champ.touched) {
+        <span class="erreur">{{ champ.erreur }}</span>
+      }
+    </label>
+  }
+
+  <div class="actions">
+    <button type="submit" [disabled]="userForm.invalid && submitted()">Submit</button>
+    <button type="reset">Reset</button>
+  </div>
+
+  @if (succes()) {
+    <p class="succes">Inscription réussie ✅</p>
+  } @else if (erreurGlobale()) {
+    <p class="erreur">{{ erreurGlobale() }}</p>
+  }
+</form>

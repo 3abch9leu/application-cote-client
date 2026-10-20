@@ -4,7 +4,20 @@
   <p class="meta">📅 {{ conference().date }} • 📍 {{ conference().lieu }}</p>
   <p class="places">{{ conference().places }} places • {{ isBooked() ? '✅ Réservée' : 'Disponible' }}</p>
 
+  <label class="places-input">
+    Places
+    <input
+      type="number"
+      min="1"
+      [max]="conference().places"
+      [ngModel]="places()"
+      (ngModelChange)="places.set(+$event)"
+      [disabled]="isBooked()"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </label>
+
   <button (click)="onToggle()">
-    {{ isBooked() ? 'Annuler' : 'Réserver' }}
+    {{ isBooked() ? 'Annuler (' + bookedPlaces() + ' place(s))' : 'Réserver' }}
   </button>
 </article>

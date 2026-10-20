@@ -1,9 +1,14 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { ConferenceService } from './conference.service';
 
+export interface Booking {
+  conferenceId: number;
+  places: number;
+}
+
 /**
  * Responsabilité UNIQUE : état des réservations.
- * - Détient les ids réservés (signal source).
+ * - Détient les réservations (signal source).
  * - Expose un compteur réactif synchronisé partout.
  * - Ne duplique JAMAIS la logique de filtrage (elle reste dans ConferenceService).
  *
@@ -21,43 +26,55 @@ import { ConferenceService } from './conference.service';
 export class BookingService {
   private readonly conferenceService = inject(ConferenceService);
 
-  // Source de vérité : liste des ids réservés
-  private readonly _bookedIds = signal<number[]>([]);
+  // Source de vérité : les réservations (conférence + nombre de places)
+  private readonly _bookings = signal<Booking[]>([]);
 
-  readonly bookedIds = this._bookedIds.asReadonly();
+  readonly bookings = this._bookings.asReadonly();
 
   // Compteur affiché dans la navbar : réactif temps réel
-  readonly bookedCount = computed(() => this._bookedIds().length);
+  readonly bookedCount = computed(() => this._bookings().length);
+
+  // Total des places réservées
+  readonly totalPlaces = computed(() =>
+    this._bookings().reduce((sum, b) => sum + b.places, 0)
+  );
+
+  // Ids réservés (lecture simple)
+  readonly bookedIds = computed(() => this._bookings().map((b) => b.conferenceId));
 
   // Programme personnalisé : jointure réactive catalogue + réservations
   readonly bookedConferences = computed(() =>
-    this._bookedIds()
-      .map((id) => this.conferenceService.getById(id))
+    this._bookings()
+      .map((b) => this.conferenceService.getById(b.conferenceId))
       .filter((c) => c !== undefined)
   );
 
   isBooked(id: number): boolean {
-    return this._bookedIds().includes(id);
+    return this.bookedIds().includes(id);
   }
 
-  book(id: number): void {
+  placesFor(id: number): number {
+    return this._bookings().find((b) => b.conferenceId === id)?.places ?? 0;
+  }
+
+  book(id: number, places = 1): void {
     if (this.isBooked(id)) return;
-    this._bookedIds.update((ids) => [...ids, id]);
+    this._bookings.update((list) => [...list, { conferenceId: id, places }]);
   }
 
   cancel(id: number): void {
-    this._bookedIds.update((ids) => ids.filter((bookedId) => bookedId !== id));
+    this._bookings.update((list) => list.filter((b) => b.conferenceId !== id));
   }
 
-  toggle(id: number): void {
+  toggle(id: number, places = 1): void {
     if (this.isBooked(id)) {
       this.cancel(id);
     } else {
-      this.book(id);
+      this.book(id, places);
     }
   }
 
   clear(): void {
-    this._bookedIds.set([]);
+    this._bookings.set([]);
   }
 }

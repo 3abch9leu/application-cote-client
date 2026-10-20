@@ -1,15 +1,11 @@
-import { Component, inject, input } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { Conference } from '../models/conference.model';
 import { BookingService } from '../services/booking.service';
 
-/**
- * Composant présentationnel : affiche UNE conférence.
- * La réservation est déléguée au BookingService partagé,
- * donc l'état est synchronisé avec la navbar, le profil, le dashboard.
- */
 @Component({
   selector: 'app-conference-details',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './conference-details.html',
   styleUrl: './conference-details.css',
 })
@@ -18,11 +14,19 @@ export class ConferenceDetails {
 
   protected readonly bookingService = inject(BookingService);
 
+  // Contrôle de saisie : nombre de places, borné par le stock disponible
+  protected readonly places = signal(1);
+
   onToggle(): void {
-    this.bookingService.toggle(this.conference().id);
+    this.bookingService.toggle(this.conference().id, this.places());
+    this.places.set(1);
   }
 
   isBooked(): boolean {
     return this.bookingService.isBooked(this.conference().id);
+  }
+
+  bookedPlaces(): number {
+    return this.bookingService.placesFor(this.conference().id);
   }
 }
